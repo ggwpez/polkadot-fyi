@@ -32,6 +32,17 @@ export default function About() {
                 <span className="font-semibold">Chain ID:</span> 420420422 (0x190f1b46)
               </p>
               <p className="text-white/90">
+                <span className="font-semibold">Contract Address:</span>{" "}
+                <a
+                  href="https://blockscout-passet-hub.parity-testnet.parity.io/address/0x3DCd0E5c92b928587AdfA2a7117389CBa722FCDa?tab=contract"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[var(--color-polkadot-pink)] hover:text-[var(--color-polkadot-violet)] text-xs break-all transition-colors"
+                >
+                  0x3DCd0E5c92b928587AdfA2a7117389CBa722FCDa
+                </a>
+              </p>
+              <p className="text-white/90">
                 <span className="font-semibold">RPC URL:</span>{" "}
                 <span className="text-xs break-all">https://testnet-passet-hub-eth-rpc.polkadot.io</span>
               </p>
@@ -41,7 +52,7 @@ export default function About() {
                   href="https://blockscout-passet-hub.parity-testnet.parity.io/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-400 hover:text-blue-300 text-xs break-all"
+                  className="text-[var(--color-polkadot-pink)] hover:text-[var(--color-polkadot-violet)] text-xs break-all transition-colors"
                 >
                   blockscout-passet-hub.parity-testnet.parity.io
                 </a>
