@@ -3,6 +3,9 @@ pragma solidity ^0.8.22;
 
 contract EntryRegistry {
 
+    // State variable to store contract creator
+    address public creator;
+
     // Custom errors (saves gas compared to require strings)
     error AbbreviationExists();
     error EntryDoesNotExist();
@@ -13,6 +16,7 @@ contract EntryRegistry {
     error DescriptionTooShort();
     error DescriptionTooLong();
     error InvalidCharacter();
+    error Unauthorized();
 
     // Struct to define an entry (abbreviation is the key, so not stored here)
     struct Entry {
@@ -26,6 +30,21 @@ contract EntryRegistry {
 
     // Mapping from abbreviation to Entry
     mapping(string => Entry) public entries;
+
+    /**
+     * @dev Constructor sets the contract creator
+     */
+    constructor() {
+        creator = msg.sender;
+    }
+
+    /**
+     * @dev Modifier to restrict functions to only the contract creator
+     */
+    modifier onlyCreator() {
+        if (msg.sender != creator) revert Unauthorized();
+        _;
+    }
 
     /**
      * @dev Add a new entry to the registry
@@ -69,6 +88,50 @@ contract EntryRegistry {
 
         // Add abbreviation to index
         abbreviations.push(_abbreviation);
+    }
+
+    /**
+     * @dev Edit an existing entry (only creator can call)
+     * @param _abbreviation The abbreviation of the entry to edit
+     * @param _title New title for the entry
+     * @param _description New description for the entry
+     */
+    function editEntry(
+        string calldata _abbreviation,
+        string calldata _title,
+        string calldata _description
+    ) public onlyCreator {
+        // Check that entry exists
+        if (bytes(entries[_abbreviation].title).length == 0) revert EntryDoesNotExist();
+
+        // Update entry
+        entries[_abbreviation].title = _title;
+        entries[_abbreviation].description = _description;
+    }
+
+    /**
+     * @dev Delete an entry (only creator can call)
+     * @param _abbreviation The abbreviation of the entry to delete
+     */
+    function deleteEntry(string calldata _abbreviation) public onlyCreator {
+        // Check that entry exists
+        if (bytes(entries[_abbreviation].title).length == 0) revert EntryDoesNotExist();
+
+        // Delete entry from mapping
+        delete entries[_abbreviation];
+
+        // Remove abbreviation from array using swap-and-pop for gas efficiency
+        uint256 length = abbreviations.length;
+        for (uint256 i = 0; i < length;) {
+            if (keccak256(bytes(abbreviations[i])) == keccak256(bytes(_abbreviation))) {
+                // Swap with last element
+                abbreviations[i] = abbreviations[length - 1];
+                // Remove last element
+                abbreviations.pop();
+                break;
+            }
+            unchecked { ++i; }
+        }
     }
 
     /**

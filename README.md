@@ -4,7 +4,7 @@
 
 ## Storage
 
-The wiki articles are stored in a smart contract on the Paseo Asset Hub testnet. It is deployed at address [`0x3DCd..`](https://blockscout-passet-hub.parity-testnet.parity.io/address/0xc6fE3B8c34517ca0a1E3B115a1C9D46Cb3e1316c?tab=contract). This is barely a front-end; the data storage itself is permissionless and resilient.
+The wiki articles are stored in a smart contract on the Paseo Asset Hub testnet. It is deployed at address [`0x3DCd..`](https://blockscout-passet-hub.parity-testnet.parity.io/address/0xf9E25a2944fb6AAfe5b98A3fff3624FaAFAce8c9?tab=contract). This is barely a front-end; the data storage itself is permissionless and resilient.
 
 You can find the solidity code in [contract.sol](contract.sol).
 

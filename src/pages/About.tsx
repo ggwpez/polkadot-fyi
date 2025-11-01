@@ -34,12 +34,12 @@ export default function About() {
               <p className="text-white/90">
                 <span className="font-semibold">Contract Address:</span>{" "}
                 <a
-                  href="https://blockscout-passet-hub.parity-testnet.parity.io/address/0xc6fE3B8c34517ca0a1E3B115a1C9D46Cb3e1316c?tab=contract"
+                  href="https://blockscout-passet-hub.parity-testnet.parity.io/address/0xf9E25a2944fb6AAfe5b98A3fff3624FaAFAce8c9?tab=contract"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[var(--color-polkadot-pink)] hover:text-[var(--color-polkadot-violet)] text-xs break-all transition-colors"
                 >
-                  0xc6fE3B8c34517ca0a1E3B115a1C9D46Cb3e1316c
+                  0xf9E25a2944fb6AAfe5b98A3fff3624FaAFAce8c9
                 </a>
               </p>
               <p className="text-white/90">
