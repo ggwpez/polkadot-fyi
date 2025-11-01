@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "../components/ui/Button";
 import {
   Card,
@@ -19,6 +19,7 @@ import { parseHashtags } from "../utils/textParser";
 
 export default function CreateEntry() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { connected, chainId } = useMetaMask();
   const [abbreviation, setAbbreviation] = useState<string>("");
   const [title, setTitle] = useState<string>("");
@@ -27,6 +28,16 @@ export default function CreateEntry() {
   const [error, setError] = useState<string>("");
 
   const isCorrectNetwork = chainId === PASEO_ASSET_HUB.chainId;
+
+  // Preset abbreviation from URL parameter
+  useEffect(() => {
+    const abbrevParam = searchParams.get("abbreviation");
+    if (abbrevParam) {
+      // Apply same validation as the input field
+      const sanitized = abbrevParam.toUpperCase().replace(/[^A-Z]/g, '').slice(0, 10);
+      setAbbreviation(sanitized);
+    }
+  }, [searchParams]);
 
   const switchToPaseoAssetHub = async () => {
     if (!(window as any).ethereum) {

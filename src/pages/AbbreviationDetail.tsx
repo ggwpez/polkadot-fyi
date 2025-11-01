@@ -106,8 +106,12 @@ export default function AbbreviationDetail() {
             <p className="mb-4 text-white/90">
               The abbreviation "{abbreviation}" does not exist in the registry.
             </p>
-            <Button variant="gradient" onClick={() => navigate("/")} className="mx-auto">
-              Back to Index
+            <Button
+              variant="gradient"
+              onClick={() => navigate(`/create?abbreviation=${abbreviation?.toUpperCase()}`)}
+              className="mx-auto"
+            >
+              Create Entry
             </Button>
           </CardContent>
         </Card>
