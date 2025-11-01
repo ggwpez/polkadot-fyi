@@ -13,7 +13,7 @@ import {
   entryRegistryABI,
   PASEO_ASSET_HUB,
 } from "../config/contract";
-import { parseHashtags } from "../utils/textParser";
+import { parseHashtags, renderTextWithNewlines } from "../utils/textParser";
 
 export default function AbbreviationDetail() {
   const { abbreviation } = useParams<{ abbreviation: string }>();
@@ -123,7 +123,7 @@ export default function AbbreviationDetail() {
             <CardTitle className="text-3xl text-[var(--color-polkadot-pink)] mb-2">
               {abbreviation}
             </CardTitle>
-            <h2 className="text-xl font-semibold text-white">{title}</h2>
+            <h2 className="text-xl font-semibold text-white">{renderTextWithNewlines(title)}</h2>
           </div>
         </CardHeader>
         <CardContent>

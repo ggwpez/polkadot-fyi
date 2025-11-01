@@ -82,7 +82,7 @@ export const entryRegistryABI = [
 ];
 
 // Contract address
-export const CONTRACT_ADDRESS = "0x3DCd0E5c92b928587AdfA2a7117389CBa722FCDa";
+export const CONTRACT_ADDRESS = "0xc6fE3B8c34517ca0a1E3B115a1C9D46Cb3e1316c";
 
 // Paseo Asset Hub network configuration
 export const PASEO_ASSET_HUB = {

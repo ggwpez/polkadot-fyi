@@ -12,6 +12,7 @@ import {
   entryRegistryABI,
   PASEO_ASSET_HUB,
 } from "../config/contract";
+import { renderTextWithNewlines } from "../utils/textParser";
 
 interface AbbreviationEntry {
   abbreviation: string;
@@ -56,6 +57,9 @@ export default function Index() {
         })
       );
 
+      // Sort alphabetically by abbreviation
+      entriesWithTitles.sort((a, b) => a.abbreviation.localeCompare(b.abbreviation));
+
       setAbbreviations(entriesWithTitles);
     } catch (err: any) {
       console.error("Error fetching abbreviations:", err);
@@ -99,7 +103,7 @@ export default function Index() {
                   >
                     <div className="flex flex-col gap-1 items-center">
                       <span className="text-[var(--color-polkadot-pink)] font-semibold text-lg">{entry.abbreviation}</span>
-                      {entry.title && <span className="text-white/70 text-sm">{entry.title}</span>}
+                      {entry.title && <span className="text-white/70 text-sm">{renderTextWithNewlines(entry.title)}</span>}
                     </div>
                   </button>
                 ))}

@@ -3,11 +3,22 @@ pragma solidity ^0.8.22;
 
 contract EntryRegistry {
 
+    // Custom errors (saves gas compared to require strings)
+    error AbbreviationExists();
+    error EntryDoesNotExist();
+    error AbbreviationTooShort();
+    error AbbreviationTooLong();
+    error TitleTooShort();
+    error TitleTooLong();
+    error DescriptionTooShort();
+    error DescriptionTooLong();
+    error InvalidCharacter();
+
     // Struct to define an entry (abbreviation is the key, so not stored here)
     struct Entry {
         string title;
         string description;
-        bool exists;
+        // Removed 'exists' boolean - we check bytes(title).length > 0 instead
     }
 
     // Array to store all abbreviations (index)
@@ -23,31 +34,37 @@ contract EntryRegistry {
      * @param _description Detailed description of the entry
      */
     function addEntry(
-        string memory _abbreviation,
-        string memory _title,
-        string memory _description
+        string calldata _abbreviation,  // Changed from memory to calldata
+        string calldata _title,          // Changed from memory to calldata
+        string calldata _description     // Changed from memory to calldata
     ) public {
-        // Check that entry doesn't already exist
-        require(!entries[_abbreviation].exists, "Abbreviation already exists");
+        // Cache lengths for reuse
+        uint256 abbrLen = bytes(_abbreviation).length;
+        uint256 titleLen = bytes(_title).length;
+        uint256 descLen = bytes(_description).length;
 
-        require(bytes(_abbreviation).length >= 2, "Abbreviation must be at least 2 long");
-        require(bytes(_abbreviation).length <= 10, "Abbreviation must be at most 10 characters");
-        require(bytes(_title).length >= 3, "Title must be at least 3 long");
-        require(bytes(_title).length <= 100, "Title must be at most 100 characters");
-        require(bytes(_description).length >= 3, "Description must be at least 3 long");
-        require(bytes(_description).length <= 1000, "Description must be at most 1000 characters");
+        // Reordered checks: cheaper operations first (length checks before string comparisons)
+        if (abbrLen < 2) revert AbbreviationTooShort();
+        if (abbrLen > 10) revert AbbreviationTooLong();
+        if (titleLen < 3) revert TitleTooShort();
+        if (titleLen > 100) revert TitleTooLong();
+        if (descLen < 3) revert DescriptionTooShort();
+        if (descLen > 1000) revert DescriptionTooLong();
+
+        // Check that entry doesn't already exist (using title length instead of exists boolean)
+        if (bytes(entries[_abbreviation].title).length != 0) revert AbbreviationExists();
 
         // Validate abbreviation contains only uppercase ASCII letters (A-Z)
-        bytes memory abbrBytes = bytes(_abbreviation);
-        for (uint i = 0; i < abbrBytes.length; i++) {
-            require(abbrBytes[i] >= 0x41 && abbrBytes[i] <= 0x5A, "Abbreviation must contain only uppercase letters A-Z");
+        bytes calldata abbrBytes = bytes(_abbreviation);
+        for (uint256 i = 0; i < abbrLen;) {  // Use cached length
+            if (abbrBytes[i] < 0x41 || abbrBytes[i] > 0x5A) revert InvalidCharacter();
+            unchecked { ++i; }  // Unchecked increment saves gas, won't overflow
         }
 
         // Create new entry in mapping
         entries[_abbreviation] = Entry({
             title: _title,
-            description: _description,
-            exists: true
+            description: _description
         });
 
         // Add abbreviation to index
@@ -59,7 +76,7 @@ contract EntryRegistry {
      * @param _abbreviation The abbreviation to look up
      * return title, description, timestamp, creator
      */
-    function getEntry(string memory _abbreviation)
+    function getEntry(string calldata _abbreviation)  // Changed from memory to calldata
         public
         view
         returns (
@@ -67,8 +84,8 @@ contract EntryRegistry {
             string memory description
         )
     {
-        require(entries[_abbreviation].exists, "Entry does not exist");
-        Entry memory entry = entries[_abbreviation];
+        Entry storage entry = entries[_abbreviation];  // Use storage pointer instead of copying to memory
+        if (bytes(entry.title).length == 0) revert EntryDoesNotExist();  // Check existence using title length
         return (entry.title, entry.description);
     }
 
@@ -93,7 +110,7 @@ contract EntryRegistry {
      * @param _abbreviation The abbreviation to check
      * @return Boolean indicating if the entry exists
      */
-    function entryExists(string memory _abbreviation) public view returns (bool) {
-        return entries[_abbreviation].exists;
+    function entryExists(string calldata _abbreviation) public view returns (bool) {  // Changed from memory to calldata
+        return bytes(entries[_abbreviation].title).length != 0;  // Check using title length instead of exists boolean
     }
 }
