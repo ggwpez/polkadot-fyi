@@ -67,7 +67,7 @@ function Footer() {
               Documentation
             </a>
             <a
-              href="https://github.com/Polkadot-UI-Initiative"
+              href="https://github.com/ggwpez/polkadot-fyi"
               className="text-white/60 hover:text-white transition-colors text-sm"
             >
               GitHub

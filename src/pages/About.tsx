@@ -16,7 +16,7 @@ export default function About() {
           <div>
             <h3 className="text-xl font-semibold text-white mb-3">What is this?</h3>
             <p className="text-white/90 leading-relaxed">
-              Polkadot FYI is a decentralized abbreviation registry built on the Paseo Asset Hub testnet.
+              Polkadot <b>F</b>or <b>Y</b>our <b>I</b>nformation is a decentralized abbreviation registry built on the Paseo Asset Hub testnet.
               It allows users to create and share definitions for common abbreviations and terminology
               used in the Polkadot ecosystem.
             </p>

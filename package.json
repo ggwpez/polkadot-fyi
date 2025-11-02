@@ -1,22 +1,17 @@
 {
-  "name": "polkadot-ui-template",
+  "name": "polkadot-fyi",
   "version": "0.1.0",
   "type": "module",
-  "description": "A beautiful, production-ready React template for building Polkadot applications",
+  "description": "A short form wiki for Polkadot backed by smart contracts.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/paritytech/polkadot-ui-template.git"
+    "url": "https://github.com/ggwpez/polkadot-fyi"
   },
   "keywords": [
     "polkadot",
-    "react",
-    "typescript",
-    "web3",
-    "blockchain",
-    "template",
-    "ui"
+    "wiki"
   ],
-  "author": "Parity Technologies",
+  "author": "Parity Technologies, Oliver Tale-Yazdi",
   "license": "MIT",
   "scripts": {
     "dev": "vite",
